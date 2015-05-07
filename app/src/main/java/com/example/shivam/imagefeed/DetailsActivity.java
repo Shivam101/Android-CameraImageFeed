@@ -1,5 +1,7 @@
 package com.example.shivam.imagefeed;
 
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -20,10 +22,22 @@ public class DetailsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        LocationService service = new LocationService(DetailsActivity.this);
+        AddressCreator addressCreator = new AddressCreator();
         cameraImage = (ImageView)findViewById(R.id.image);
         locationText = (TextView)findViewById(R.id.locationText);
         imageUri = getIntent().getData();
-        Picasso.with(this).load(imageUri.toString()).into(cameraImage);
+        Location gpsLocation = service.getLocation(LocationManager.GPS_PROVIDER);
+        if (gpsLocation != null) {
+            double latitude = gpsLocation.getLatitude();
+            double longitude = gpsLocation.getLongitude();
+            String result = "Latitude: " + gpsLocation.getLatitude() +
+                    " Longitude: " + gpsLocation.getLongitude();
+            locationText.setText(result);
+        }
+           // addressCreator.getAddress(latitude,longitude,DetailsActivity.this,);
+
+            Picasso.with(this).load(imageUri.toString()).resize(500,500).into(cameraImage);
 
     }
 
