@@ -23,7 +23,7 @@ public class DetailsActivity extends ActionBarActivity {
         cameraImage = (ImageView)findViewById(R.id.image);
         locationText = (TextView)findViewById(R.id.locationText);
         imageUri = getIntent().getData();
-        Picasso.with(this).load(imageUri.toString()).centerCrop().into(cameraImage);
+        Picasso.with(this).load(imageUri.toString()).into(cameraImage);
 
     }
 
