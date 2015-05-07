@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ImageFeed</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_add">New Image</string>
+    <string name="storage_access_error">Could not access image storage</string>
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="action_settings">Settings</string>
+</resources>
