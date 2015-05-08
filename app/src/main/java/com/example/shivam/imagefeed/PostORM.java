@@ -52,7 +52,7 @@ public class PostORM {
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(c);
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> uris = new ArrayList<String>();
-        Cursor cur = myDataBase.rawQuery("SELECT uri from post",null);
+        Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
         Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {
@@ -67,7 +67,7 @@ public class PostORM {
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(c);
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> coordinates = new ArrayList<String>();
-        Cursor cur = myDataBase.rawQuery("SELECT coordinates from post",null);
+        Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
         Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {
@@ -82,7 +82,7 @@ public class PostORM {
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(c);
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> addresses = new ArrayList<String>();
-        Cursor cur = myDataBase.rawQuery("SELECT address from post",null);
+        Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
         Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {

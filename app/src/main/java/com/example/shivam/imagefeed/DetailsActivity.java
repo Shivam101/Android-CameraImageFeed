@@ -51,6 +51,8 @@ public class DetailsActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 p.insertPost(DetailsActivity.this, imageUri.toString(), resultLatLong, resultAddr);
+                p.getAddressfromDB(DetailsActivity.this);
+                p.getCoordinatesfromDB(DetailsActivity.this);
                 Toast.makeText(DetailsActivity.this,"Created new Post",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(DetailsActivity.this,MainActivity.class);
                 startActivity(i);

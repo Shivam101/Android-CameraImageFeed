@@ -1,18 +1,24 @@
 package com.example.shivam.imagefeed;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -20,10 +26,22 @@ public class MainActivity extends ActionBarActivity {
 
     Uri imageUri;
     int IMAGE_CONST = 1;
+    ArrayList<String> sqluri,sqlcoordinate,sqladdress;
+    PostORM p = new PostORM();
+    ArrayList<ArrayList<String>> holder;
+    ListView feedList;
+    PostAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sqluri = new ArrayList<>();
+        sqladdress = new ArrayList<>();
+        sqlcoordinate = new ArrayList<>();
+        feedList = (ListView)findViewById(R.id.feedList);
+        holder = new ArrayList<ArrayList<String>>();
+        new SQLTask().execute();
     }
 
     @Override
@@ -48,6 +66,46 @@ public class MainActivity extends ActionBarActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class SQLTask extends AsyncTask<String,String,ArrayList<ArrayList<String>>>
+    {
+        private ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this);
+            pDialog.setMessage("Loading your feed ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+
+        @Override
+        protected ArrayList<ArrayList<String>> doInBackground(String... params) {
+            sqluri = p.getUrifromDB(MainActivity.this);
+            sqlcoordinate = p.getCoordinatesfromDB(MainActivity.this);
+            sqladdress = p.getAddressfromDB(MainActivity.this);
+            holder.add(sqluri);
+            holder.add(sqlcoordinate);
+            holder.add(sqladdress);
+//            adapter.notifyDataSetChanged();
+            return holder;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<ArrayList<String>> arrayLists) {
+            ArrayList<String> uris = sqluri;
+            ArrayList<String> coordinates = sqlcoordinate;
+            ArrayList<String> addresses = sqladdress;
+            adapter = new PostAdapter(MainActivity.this,R.layout.list_item,uris,coordinates,addresses);
+            feedList.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            pDialog.dismiss();
+
+        }
     }
 
     private Uri getOutputUri(int mediaType) {
