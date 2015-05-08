@@ -68,7 +68,7 @@ public class PostAdapter extends BaseAdapter {
             holder = (PostHolder)row.getTag();
         }
 
-            Picasso.with(this.context).load(Uri.parse(uri.get(position)).toString()).resize(90,90).into(holder.postImage);
+            Picasso.with(this.context).load(Uri.parse(uri.get(position)).toString()).resize(500,350).into(holder.postImage);
             holder.txtTitle2.setText(coordinate.get(position));
             holder.txtTitle3.setText(address.get(position));
         return row;
