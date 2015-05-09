@@ -57,9 +57,7 @@ public class MainActivity extends ActionBarActivity {
             Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             imageUri = getOutputUri(IMAGE_CONST);
             if (imageUri == null) {
-                Toast.makeText(MainActivity.this,
-                        R.string.storage_access_error, Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(MainActivity.this, R.string.storage_access_error, Toast.LENGTH_SHORT).show();
             } else {
                 pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(pictureIntent, IMAGE_CONST);
