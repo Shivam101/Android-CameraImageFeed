@@ -24,8 +24,9 @@ public class PostAdapter extends BaseAdapter {
     ArrayList<String> uri = new ArrayList<String>();
     ArrayList<String> coordinate = new ArrayList<String>();
     ArrayList<String> address = new ArrayList<String>();
+    ArrayList<String> time = new ArrayList<String>();
 
-    public PostAdapter(Context c,int layoutResourceId,ArrayList<String> uri,ArrayList<String> coordinate,ArrayList<String> address)
+    public PostAdapter(Context c,int layoutResourceId,ArrayList<String> uri,ArrayList<String> coordinate,ArrayList<String> address,ArrayList<String> time)
     {
 
         this.context = c;
@@ -33,6 +34,7 @@ public class PostAdapter extends BaseAdapter {
         this.uri = uri;
         this.coordinate = coordinate;
         this.address = address;
+        this.time = time;
     }
 
     @Override
@@ -59,8 +61,9 @@ public class PostAdapter extends BaseAdapter {
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new PostHolder();
             holder.postImage = (ImageView)row.findViewById(R.id.listImage);
-            holder.txtTitle2 = (TextView)row.findViewById(R.id.listCoordinates);
-            holder.txtTitle3 = (TextView)row.findViewById(R.id.listAddress);
+            holder.txtTitle = (TextView)row.findViewById(R.id.listCoordinates);
+            holder.txtTitle2 = (TextView)row.findViewById(R.id.listAddress);
+            holder.txtTitle3 = (TextView)row.findViewById(R.id.listTime);
             row.setTag(holder);
         }
         else
@@ -69,8 +72,9 @@ public class PostAdapter extends BaseAdapter {
         }
 
             Picasso.with(this.context).load(Uri.parse(uri.get(position)).toString()).resize(500,350).into(holder.postImage);
-            holder.txtTitle2.setText(coordinate.get(position));
-            holder.txtTitle3.setText(address.get(position));
+            holder.txtTitle.setText(coordinate.get(position));
+            holder.txtTitle2.setText(address.get(position));
+        holder.txtTitle3.setText(time.get(position));
         return row;
     }
 
@@ -78,6 +82,7 @@ public class PostAdapter extends BaseAdapter {
     static class PostHolder
     {
         ImageView postImage;
+        TextView txtTitle;
         TextView txtTitle2;
         TextView txtTitle3;
     }

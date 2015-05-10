@@ -18,6 +18,7 @@ public class PostORM {
     private static final String COLUMN_URI = "uri";
     private static final String COLUMN_COORDINATES = "coordinates";
     private static final String COLUMN_ADDRESS = "address";
+    private static final String COLUMN_TIME = "time";
     private DatabaseWrapper dw;
     SQLiteDatabase myDataBase;
 
@@ -25,12 +26,13 @@ public class PostORM {
             "CREATE TABLE " + TABLE_NAME + "("
                     + COLUMN_URI + " TEXT, "
                     + COLUMN_COORDINATES + " TEXT, "
-                    + COLUMN_ADDRESS + " TEXT)";
+                    + COLUMN_ADDRESS + " TEXT, "
+                    + COLUMN_TIME + " TEXT)";
 
     public static final String SQL_DROP_TABLE =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public int insertPost(Context c,String uri,String coordinates,String address)
+    public int insertPost(Context c,String uri,String coordinates,String address,String time)
     {
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(c);
         myDataBase = databaseWrapper.getWritableDatabase();
@@ -40,6 +42,7 @@ public class PostORM {
             values.put(PostORM.COLUMN_URI,uri);
             values.put(PostORM.COLUMN_COORDINATES,coordinates);
             values.put(PostORM.COLUMN_ADDRESS,address);
+            values.put(PostORM.COLUMN_TIME,time);
             postId = myDataBase.insert(PostORM.TABLE_NAME, "null", values);
             Log.e(TAG, "Inserted new Post with ID: " + postId);
             myDataBase.close();
@@ -90,6 +93,21 @@ public class PostORM {
         }
         System.out.println(addresses);
         return addresses;
+    }
+
+    public ArrayList<String> getTimefromDB(Context c)
+    {
+        DatabaseWrapper databaseWrapper = new DatabaseWrapper(c);
+        myDataBase = databaseWrapper.getWritableDatabase();
+        ArrayList<String> times = new ArrayList<String>();
+        Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
+        Log.e("COUNT",String.valueOf(cur.getCount()));
+        for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
+        {
+            times.add(cur.getString(3));
+        }
+        System.out.println(times);
+        return times;
     }
 
 

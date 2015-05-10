@@ -26,7 +26,7 @@ public class MainActivity extends ActionBarActivity {
 
     Uri imageUri;
     int IMAGE_CONST = 1;
-    ArrayList<String> sqluri,sqlcoordinate,sqladdress;
+    ArrayList<String> sqluri,sqlcoordinate,sqladdress,sqltime;
     PostORM p = new PostORM();
     ArrayList<ArrayList<String>> holder;
     ListView feedList;
@@ -39,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
         sqluri = new ArrayList<>();
         sqladdress = new ArrayList<>();
         sqlcoordinate = new ArrayList<>();
+        sqltime = new ArrayList<>();
         feedList = (ListView)findViewById(R.id.feedList);
         holder = new ArrayList<ArrayList<String>>();
         new SQLTask().execute();
@@ -86,9 +87,11 @@ public class MainActivity extends ActionBarActivity {
             sqluri = p.getUrifromDB(MainActivity.this);
             sqlcoordinate = p.getCoordinatesfromDB(MainActivity.this);
             sqladdress = p.getAddressfromDB(MainActivity.this);
+            sqltime = p.getTimefromDB(MainActivity.this);
             holder.add(sqluri);
             holder.add(sqlcoordinate);
             holder.add(sqladdress);
+            holder.add(sqltime);
 //            adapter.notifyDataSetChanged();
             return holder;
         }
@@ -98,7 +101,8 @@ public class MainActivity extends ActionBarActivity {
             ArrayList<String> uris = sqluri;
             ArrayList<String> coordinates = sqlcoordinate;
             ArrayList<String> addresses = sqladdress;
-            adapter = new PostAdapter(MainActivity.this,R.layout.list_item,uris,coordinates,addresses);
+            ArrayList<String> times = sqltime;
+            adapter = new PostAdapter(MainActivity.this,R.layout.list_item,uris,coordinates,addresses,times);
             feedList.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             pDialog.dismiss();

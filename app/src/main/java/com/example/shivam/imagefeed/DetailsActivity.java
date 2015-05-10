@@ -3,6 +3,7 @@ package com.example.shivam.imagefeed;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,16 +57,19 @@ public class DetailsActivity extends ActionBarActivity {
         mCancel = (Button)findViewById(R.id.cancelPost);
         addresses = new ArrayList<>();
         mRetry = (Button)findViewById(R.id.retryButton);
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        final String updated = "Updated : "+today.monthDay+"-"+today.month+"-"+today.year+"   "+today.format("%k:%M:%S");
 
         imageUri = getIntent().getData();
         mSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                p.insertPost(DetailsActivity.this, imageUri.toString(), resultLatLong, resultAddr);
+                p.insertPost(DetailsActivity.this, imageUri.toString(), resultLatLong, resultAddr,updated);
                 p.getAddressfromDB(DetailsActivity.this);
                 p.getCoordinatesfromDB(DetailsActivity.this);
-                Toast.makeText(DetailsActivity.this,"Created new Post",Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(DetailsActivity.this,MainActivity.class);
+                Toast.makeText(DetailsActivity.this, "Created new Post", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(DetailsActivity.this, MainActivity.class);
                 startActivity(i);
             }
         });
@@ -120,10 +126,10 @@ public class DetailsActivity extends ActionBarActivity {
             mSave.setVisibility(View.GONE);
             mRetry.setVisibility(View.VISIBLE);
         }
-
-            Picasso.with(this).load(imageUri.toString()).resize(500,500).into(cameraImage);
+        Picasso.with(this).load(imageUri.toString()).resize(500,500).into(cameraImage);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
