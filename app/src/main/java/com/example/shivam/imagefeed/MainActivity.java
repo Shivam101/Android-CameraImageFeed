@@ -10,8 +10,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.lang.reflect.Array;
@@ -31,6 +34,7 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<ArrayList<String>> holder;
     ListView feedList;
     PostAdapter adapter;
+    FloatingActionButton add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,20 @@ public class MainActivity extends ActionBarActivity {
         sqltime = new ArrayList<>();
         feedList = (ListView)findViewById(R.id.feedList);
         holder = new ArrayList<ArrayList<String>>();
+        add = (FloatingActionButton)findViewById(R.id.fab1);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                imageUri = getOutputUri(IMAGE_CONST);
+                if (imageUri == null) {
+                    Toast.makeText(MainActivity.this, R.string.storage_access_error, Toast.LENGTH_SHORT).show();
+                } else {
+                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                    startActivityForResult(pictureIntent, IMAGE_CONST);
+                }
+            }
+        });
         new SQLTask().execute();
     }
 
@@ -54,19 +72,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_add) {
-            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            imageUri = getOutputUri(IMAGE_CONST);
-            if (imageUri == null) {
-                Toast.makeText(MainActivity.this, R.string.storage_access_error, Toast.LENGTH_SHORT).show();
-            } else {
-                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                startActivityForResult(pictureIntent, IMAGE_CONST);
-            }
-        }
         return super.onOptionsItemSelected(item);
     }
-
+    //populates the list asynchronously
     public class SQLTask extends AsyncTask<String,String,ArrayList<ArrayList<String>>>
     {
         private ProgressDialog pDialog;
@@ -92,7 +100,6 @@ public class MainActivity extends ActionBarActivity {
             holder.add(sqlcoordinate);
             holder.add(sqladdress);
             holder.add(sqltime);
-//            adapter.notifyDataSetChanged();
             return holder;
         }
 
@@ -110,6 +117,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    //returns Uri as well as creates a directory for storing images locally on the device
     private Uri getOutputUri(int mediaType) {
         if (hasExternalStorage()) {
             // get external storage directory
@@ -163,7 +171,6 @@ public class MainActivity extends ActionBarActivity {
 
             Intent sendIntent = new Intent(MainActivity.this,DetailsActivity.class);
             sendIntent.setData(imageUri);
-            //sendIntent.putExtra("FILE_URI", imageUri);
             startActivity(sendIntent);
         }
         else if(resultCode != RESULT_CANCELED)

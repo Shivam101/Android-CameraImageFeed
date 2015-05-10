@@ -56,12 +56,10 @@ public class PostORM {
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> uris = new ArrayList<String>();
         Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
-        Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {
             uris.add(cur.getString(0));
         }
-        System.out.println(uris);
         return uris;
     }
 
@@ -71,12 +69,10 @@ public class PostORM {
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> coordinates = new ArrayList<String>();
         Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
-        Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {
             coordinates.add(cur.getString(1));
         }
-        System.out.println(coordinates);
         return coordinates;
     }
 
@@ -86,12 +82,10 @@ public class PostORM {
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> addresses = new ArrayList<String>();
         Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
-        Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {
             addresses.add(cur.getString(2));
         }
-        System.out.println(addresses);
         return addresses;
     }
 
@@ -101,12 +95,10 @@ public class PostORM {
         myDataBase = databaseWrapper.getWritableDatabase();
         ArrayList<String> times = new ArrayList<String>();
         Cursor cur = myDataBase.rawQuery("SELECT * from post",null);
-        Log.e("COUNT",String.valueOf(cur.getCount()));
         for(cur.moveToFirst();!cur.isAfterLast();cur.moveToNext())
         {
             times.add(cur.getString(3));
         }
-        System.out.println(times);
         return times;
     }
 

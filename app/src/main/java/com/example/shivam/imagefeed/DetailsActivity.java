@@ -59,7 +59,7 @@ public class DetailsActivity extends ActionBarActivity {
         mRetry = (Button)findViewById(R.id.retryButton);
         Time today = new Time(Time.getCurrentTimezone());
         today.setToNow();
-        final String updated = "Updated : "+today.monthDay+"-"+today.month+"-"+today.year+"   "+today.format("%k:%M:%S");
+        final String updated = "Updated : "+today.monthDay+"-"+(today.month+1)+"-"+today.year+"   "+today.format("%k:%M:%S");
 
         imageUri = getIntent().getData();
         mSave.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class DetailsActivity extends ActionBarActivity {
             mSave.setVisibility(View.GONE);
             mRetry.setVisibility(View.VISIBLE);
         }
-        Picasso.with(this).load(imageUri.toString()).resize(500,500).into(cameraImage);
+        Picasso.with(this).load(imageUri.toString()).placeholder(R.drawable.placeholder).resize(500,500).into(cameraImage);
 
     }
 
